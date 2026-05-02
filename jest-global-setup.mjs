@@ -5,6 +5,17 @@ import waitOn from "wait-on";
 
 const pidFile = join(process.cwd(), ".jest-server-pid.txt");
 
+function resolveDemoCli() {
+  return join(
+    process.cwd(),
+    "node_modules",
+    "@venkatesulu-settybalija",
+    "analytics-demo-app",
+    "dist",
+    "cli.js",
+  );
+}
+
 export default async function globalSetup() {
   const appPort = process.env.APP_PORT ?? "3100";
   const baseURL = process.env.BASE_URL ?? `http://127.0.0.1:${appPort}`;
@@ -22,8 +33,8 @@ export default async function globalSetup() {
     }
   }
 
-  const tsxBin = join(process.cwd(), "node_modules", ".bin", "tsx");
-  const child = spawn(tsxBin, ["app/server.ts"], {
+  const cliJs = resolveDemoCli();
+  const child = spawn(process.execPath, [cliJs], {
     cwd: process.cwd(),
     env: {
       ...process.env,

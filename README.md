@@ -1,22 +1,16 @@
-# Analytics E2E Lab
+# Analytics E2E Lab (Puppeteer)
 
-Local-first analytics demo app (no database, no Docker) with an automation framework on top.
+**Jest + Puppeteer** automation for the **shared analytics demo app** [`@venkatesulu-settybalija/analytics-demo-app`](https://github.com/venkatesulu-settybalija/analytics-demo-app). This repo holds **tests and framework code**; the Express + static UI ship in that package.
 
-## Includes
+## Demo app (via dependency)
 
-- Express app with static multi-page UI:
-  - Login
-  - Feed editor
-  - Dashboard with KPI cards, configurable time window (+ day/week grain), bucket labels, bar vs line chart, **CSV export** of KPIs + series, and **saved views** persisted in `localStorage` (browser-only “dashboards”)
-  - Explore screen with **dataset catalogue** (`feeds`, synthetic `events_daily`) and **SQL Lab lite** (read-only `SELECT` on `feeds`)
-- API routes for auth (returns `role`), feed management, `GET /api/datasets`, `POST /api/sqllab/run`, parameterized `GET /api/dashboard/summary?days=&granularity=`, and `GET /api/auth/me`
-- **Roles**: `admin` (default `demo` / `demo123`) can create, edit, and toggle feeds; `viewer` (`viewer` / `viewer123`) is read-only for mutations
-- GitHub Actions workflow runs `npm test` on push/PR
-- **Jest** + **Puppeteer** for automation:
-  - POM (`src/ui/pages`)
-  - Shared reset helper (`src/fixtures/reset.ts`)
-  - API clients using `fetch` (`src/api/clients`)
-  - `tests/api` and `tests/ui` suites
+Same behaviour as the Playwright lab: login, feeds, dashboard (KPIs, grain, CSV, saved views), Explore, SQL Lab lite, `admin` / `viewer` roles (`demo` / `demo123`, `viewer` / `viewer123`).
+
+## This repo
+
+- **Jest** + **Puppeteer**: POM (`src/ui/pages`), reset helper (`src/fixtures/reset.ts`), `fetch` API clients (`src/api/clients`), `tests/api` and `tests/ui`
+- `jest-global-setup.mjs` starts **`node_modules/.../analytics-demo-app/dist/cli.js`** with `APP_ENABLE_RESET=true`
+- GitHub Actions runs `npm test` on push/PR
 
 ## Run
 
@@ -25,24 +19,19 @@ npm install
 npm test
 ```
 
-Puppeteer downloads a compatible Chromium on install; no separate browser install step is required.
-
-For just API tests:
+Puppeteer downloads Chromium on install.
 
 ```bash
 npm run test:api
+npm run test:headed   # UI with visible browser
 ```
 
-For UI tests in a visible browser:
+`npm run app:start` runs the **`analytics-demo-app`** CLI from `node_modules`.
 
-```bash
-npm run test:headed
-```
+`maxWorkers: 1` — shared in-memory app state.
 
-Override credentials with environment variables (see `.env.example`). `npm run app:start` enables `APP_ENABLE_RESET=true` so `POST /api/__reset` works when you reuse the local server.
+Optional: `REUSE_TEST_SERVER=1` if the app is already running.
 
-Set `APP_PORT` (and optionally `BASE_URL`) if port `3100` is already taken; `src/config/env.ts` defaults to that port when unset.
+## Pinning the demo app
 
-Jest runs with `maxWorkers: 1` because every test hits the same in-memory demo process; one worker avoids flaky shared-state races.
-
-If the app is already running locally, you can set `REUSE_TEST_SERVER=1` so `jest-global-setup.mjs` skips spawning another process (optional).
+`package.json` pins `github:venkatesulu-settybalija/analytics-demo-app#v1.0.1`. Bump the tag when the demo app releases a new version.

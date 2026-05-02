@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "app:start": "APP_ENABLE_RESET=true tsx app/server.ts",
+    "app:start": "env APP_ENABLE_RESET=true analytics-demo-app",
     "test:api": "NODE_OPTIONS=--experimental-vm-modules jest tests/api",
     "test:ui": "NODE_OPTIONS=--experimental-vm-modules jest tests/ui",
     "test:headed": "HEADLESS=false NODE_OPTIONS=--experimental-vm-modules jest tests/ui"
@@ -22,30 +22,25 @@
     "export",
     "saved views"
   ],
-  "author": "Venkatesulu Settybaliju",
-  "email": "venkatesulu.settybaliju@gmail.com",
-  "url": "https://github.com/venkatesulu-settybaliju",
+  "author": "Venkatesulu Settybalija",
   "repository": {
     "type": "git",
-    "url": "https://github.com/venkatesulu-settybaliju/analytics-e2e-lab.git"
+    "url": "https://github.com/venkatesulu-settybalija/analytics-e2e-lab-puppeteer.git"
   },
   "bugs": {
-    "url": "https://github.com/venkatesulu-settybaliju/analytics-e2e-lab/issues"
+    "url": "https://github.com/venkatesulu-settybalija/analytics-e2e-lab-puppeteer/issues"
   },
-  "homepage": "https://github.com/venkatesulu-settybaliju/analytics-e2e-lab#readme",
-  "license": "ISC",
+  "homepage": "https://github.com/venkatesulu-settybalija/analytics-e2e-lab-puppeteer#readme",
+  "license": "MIT",
   "dependencies": {
-    "express": "^5.2.1",
-    "zod": "^4.4.1"
+    "@venkatesulu-settybalija/analytics-demo-app": "github:venkatesulu-settybalija/analytics-demo-app#v1.0.1"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.6.0",
     "jest": "^30.3.0",
     "puppeteer": "^24.42.0",
     "ts-jest": "^29.4.9",
-    "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "wait-on": "^9.0.5"
   },
